@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1,user-scalable=0" name="viewport">
+    <meta name="theme-color" content="#fff">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="Copyright" content="LenJee">
+    <link rel="shortcut icon" href="./static/favicon.ico">
+    <title>LenJee</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="./vconsole.min.js"></script>
+    <script type="text/javascript">
+
+      // 处理url中的参数
+      function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+      }
+      // 获取 ticket
+      var _ticket=getUrlParam('ticket');
+      console.log('ticket :',_ticket);
+
+      var _token ="";
+      // 获取 access_token
+      // http://+讯通域名+/openauth2/api/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+      $.ajax({
+           url: 'http://vv6.vanke.com/openauth2/api/token?grant_type=client_credential&appid=20217&secret=20217',
+           type: "GET",
+           success: function (data) {
+             _token=data.access_token;
+             console.log("返回值 : ",data," _token: ",_token);
+             // 获取用户信息
+             getUserInfo(_ticket,_token);
+           }
+       });
+
+       // 获取用户用户上下文
+       // 接口请求地址：http://+讯通域名+/openauth2/api/getcontext?ticket=TICKET&access_token=TOKEN
+       function getUserInfo(ticket,token){
+         var _url="http://vv6.vanke.com/openauth2/api/getcontext?ticket="+ticket+"&access_token="+token;
+         console.log("ticket: ",ticket," token: ",token," url: ",_url);
+         $.ajax({
+              url:_url,
+              type: "GET",
+              success: function (data) {
+                console.log(" 用户信息 : ",data);
+                // {
+                // 	"appid": 轻应用ID,
+                // 	"eid": 企业ID,
+                // 	"openid": 用户ID（值为oId值）,
+                // 	"username": 用户姓名,
+                // 	"xtid":讯通用户Id,
+                // 	"userid":微博用户Id（一般情况下，xtid与userid相等）,
+                // 	"realOpenId":真实openId,
+                // 	"mobile":私有云登陆的账号,
+                // 	"email":邮箱,
+                // 	"workphone1":办公电话1,
+                // 	"workphone2":办公电话2,
+                // 	"departOrgName":用户所属组织长名,
+                // 	"cloudpassport": 云通行证
+                // 	"projectCode":项目编码
+                // 	"xtUrl":消息域名
+                // 	"photoUrl":头像地址
+                // 	"isAdmin":是否是工作圈管理员，1为管理员
+                // 	"partnerType":是否是商务伙伴，1为商务伙伴
+                // 	"orgId":组织ID
+                // }
+                //
+                // 如果没access_token,只传入了ticket,返回对应用户的企业:
+                //  { "appid": 轻应用ID, "eid": 企业ID}
+                // 如果没ticket,只传入了access_token,返回对应的应用:
+                //  { "appid": 轻应用ID}
+              }
+          });
+       }
+
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      跟投项目 -> 对接vv -> 测试
+    </div>
+  </body>
+</html>
