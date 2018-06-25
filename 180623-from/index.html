@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function test(){
+       //     var form1=document.getElementById("formId");//[object HTMLFormElement]
+
+       //     var form1=document.getElementsByName("form1")[0];//[object HTMLFormElement]
+
+        //   var form1=document.getElementsByTagName("form")[0];//[object HTMLFormElement]
+
+            var forms=document.forms;//[object HTMLCollection]
+
+            //form对象的 第一种获取方式
+            var form1=document.forms[0];
+           var _file=document.getElementById('file')
+
+           console.log("form1 -> : ",_file.files[0]);
+           // for(var i =0 ;i<forms.length;i++){
+           //      alert(forms[i].name);
+           // }
+            //form对象的 第二种获取方式
+//            var form1=document.forms["form1"];
+            //form对象的 第三种获取方式
+     //       var form1=document.form1;
+//            alert(form1.elements.length);
+//            alert(form1.length);
+
+        }
+
+    </script>
+</head>
+<body>
+    <form name="form1" id="formId" action="test.html" method="get">
+      <input type="file" id="file" name="" value="">
+
+    </form>
+    <form name="form2" id="formId2" action="test.html" method="get">
+        用户名:<input name="uname"  /><br/>
+        密码:<input type="password" name="pwd"/><br/>
+        <input type="submit" value="提交" />
+    </form>
+    <input type="button" value="test" onclick="test()" />
+</body>
+</html>
